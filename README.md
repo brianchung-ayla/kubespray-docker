@@ -1,6 +1,7 @@
-## kubespray-docker
+# kubespray-docker
+* Folk from https://github.com/kubernetes-sigs/kubespray/tree/v2.9.0
 
-# use host_output/output.yml to define host list & args
+## use host_output/output.yml to define host list & args
 * lab mode
 ```
 cp host_output/output.yml.lab host_output/output.yml
@@ -11,7 +12,7 @@ cp host_output/output.yml.lab host_output/output.yml
 cp host_output/output.yml.production host_output/output.yml
 ```
 
-# use kubedep.sh to do below actions
+## use kubedep.sh to do below actions
 
 * deploy k8s cluster
 ```
