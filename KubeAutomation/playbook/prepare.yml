@@ -1,0 +1,26 @@
+- hosts: localhost
+  gather_facts: no
+  vars_files: 
+  - "../vars/output.yml"
+  tasks:
+  - name: generate hosts.ini
+    template: 
+      src: ../template/hosts.ini.j2
+      dest: ../config/hosts.ini
+    when: lab is not defined
+
+  - name: generate lab hosts.ini
+    template: 
+      src: ../template/hosts-lab.ini.j2
+      dest: ../config/hosts.ini
+    when: lab is defined
+
+  - name: generate all.yml
+    template: 
+      src: ../template/all.yml.j2
+      dest: ../config/all.yml
+
+  - name: generate init.yml
+    template: 
+      src: ../template/init.yml.j2
+      dest: ../playbook/init.yml

@@ -1,0 +1,15 @@
+- hosts: k8s-node1
+  gather_facts: no
+  become: yes
+  become_method: sudo
+  tasks:
+  - name: copy init files
+    copy:
+      src: ../files/init
+      dest: /tmp/
+
+  - name: create secret
+    shell: kubectl create -f /tmp/init/secret
+
+  - name: clean tmp folder
+    shell: rm -rf /tmp/init

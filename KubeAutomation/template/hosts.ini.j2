@@ -1,0 +1,44 @@
+[all:children]
+kube-master
+etcd
+kube-node
+
+[kube-master]
+{% for master in masters -%}
+{% set list =  master.split(',') %}
+{{ list[0] }} ansible_host={{ list[1] }} ip={{ list[1] }}
+{% endfor %}
+
+[etcd]
+{% for etcd in etcds -%}
+{% set list =  etcd.split(',') %}
+{{ list[0] }} ansible_host={{ list[1] }} ip={{ list[1] }}
+{% endfor %}
+
+[kube-node]
+{% for node in nodes -%}
+{% set list =  node.split(',') %}
+{{ list[0] }} ansible_host={{ list[1] }} ip={{ list[1] }}
+{% endfor %}
+{% for node in ingress -%}
+{% set list =  node.split(',') %}
+{{ list[0] }} ansible_host={{ list[1] }} ip={{ list[1] }}
+{% endfor %}
+
+[kube-ingress]
+{% for node in ingress -%}
+{% set list =  node.split(',') %}
+{{ list[0] }} ansible_host={{ list[1] }} ip={{ list[1] }}
+{% endfor %}
+
+[k8s-cluster:children]
+kube-master 	 
+kube-node 	 
+
+[calico-rr]
+
+[kube-node:vars]
+node_labels={"network":"internal"}
+
+[kube-ingress:vars]
+node_labels={"network":"external"}
