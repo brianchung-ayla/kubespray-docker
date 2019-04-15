@@ -7,7 +7,7 @@ cd /root/kubespray-docker/KubeAutomation/playbook && ansible-playbook prepare.ym
 kubedep() {
 docker run -d --name kubespray-docker \
 -v /root/.ssh:/root/.ssh \
--v /root/kubespray-docker/KubeAutomation:/tmp/KubeAutomation \
+-v ${PWD}/KubeAutomation:/tmp/KubeAutomation \
 kubespray-docker $1 $2
 
 docker logs -f kubespray-docker
