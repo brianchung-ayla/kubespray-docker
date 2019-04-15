@@ -11,7 +11,7 @@ cp /tmp/KubeAutomation/config/all.yml /kubespray/inventory/mycluster/group_vars/
 cp /tmp/KubeAutomation/config/docker.yml /kubespray/inventory/mycluster/group_vars/all/docker.yml
 cp /tmp/KubeAutomation/config/reset.yml /kubespray/reset.yml
 cp /tmp/KubeAutomation/config/k8s_app_main.yml /kubespray/roles/kubernetes-apps/ansible/defaults/main.yml
-cp /tmp/KubeAutomation/config/k8s_master_main.yml /kubespray/roles/kubernetes/master/defaults/main.yml
+cp /tmp/KubeAutomation/config/k8s_master_main.yml /kubespray/roles/kubernetes/master/defaults/main/main.yml
 cp /tmp/KubeAutomation/config/k8s_node_main.yml /kubespray/roles/kubernetes/node/defaults/main.yml
 
 ACTION=$1
@@ -24,9 +24,6 @@ case $ACTION in
   'deploy' )
     ansible-playbook -i inventory/mycluster/hosts.ini --become --become-user=root cluster.yml
     ansible-playbook -i inventory/mycluster/hosts.ini --become --become-user=root /tmp/KubeAutomation/playbook/init.yml
-    if [ "$2" == "CN" ];then
-        ansible-playbook -i inventory/mycluster/hosts.ini --become --become-user=root /tmp/KubeAutomation/playbook/clean_proxy.yml
-    fi
     ;;
 
   'reset' )
