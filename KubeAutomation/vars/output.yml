@@ -1,5 +1,5 @@
 masters:
-  - brian-demo-2kcc,10.10.40.63
-  - brian-demo-bdhv,10.10.43.192
-  - brian-demo-srpv,10.10.40.62
+  - brian-demo-dtw4,10.10.43.196
+  - brian-demo-j2jq,10.10.43.194
+  - brian-demo-jhrt,10.10.43.195
 lab: true
