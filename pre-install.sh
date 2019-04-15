@@ -6,7 +6,7 @@ if [ "$USER" != "root" ];then
     sed -i 's/root/ubuntu/g' KubeAutomation/template/hosts.ini.j2
 fi
 
-read -p 'which cloud provider you use? (gcp/aws)' CLOUD
+read -p 'which cloud provider you use? (gcp/aws) ' CLOUD
 
 if [ "$CLOUD" = "gcp" ];then
   sudo apt-get update
@@ -17,3 +17,5 @@ else
   sudo apt-get update
   sudo apt-get install -y docker-ce
 fi
+
+docker build -t kubespray-docker .
