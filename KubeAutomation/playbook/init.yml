@@ -1,4 +1,4 @@
-- hosts: brian-demo-dtw4
+- hosts: k8s-node1
   gather_facts: no
   become: yes
   become_method: sudo
@@ -9,10 +9,7 @@
       dest: /tmp/
 
   - name: create secret
-    shell: cd /tmp/init/secret && sh gen_secret.sh &&  kubectl apply -f /tmp/init/secret
-
-  - name: create nginx demo
-    shell: cd /tmp/init/secret && sh gen_secret.sh &&  kubectl apply -f /tmp/init/ingress
+    shell: cd /tmp/init/secret && sh gen_secret.sh &&  kubectl create -f /tmp/init/secret
 
   - name: clean tmp folder
     shell: rm -rf /tmp/init
