@@ -1,5 +1,5 @@
 masters:
-  - k8s-node1,10.0.0.1
-  - k8s-node2,10.0.0.2
-  - k8s-node3,10.0.0.3
+  - brian-demo-g4xl,10.10.43.198
+  - brian-demo-q493,10.10.43.199
+  - brian-demo-dlr5,10.10.43.200
 lab: true
