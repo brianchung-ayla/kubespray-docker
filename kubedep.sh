@@ -2,6 +2,7 @@
 
 
 cp host_output/output.yml KubeAutomation/vars/output.yml
+cp KubeAutomation/config/hosts.ini /etc/ansible/hosts
 cd /root/kubespray-docker/KubeAutomation/playbook && ansible-playbook prepare.yml && cd -
 
 kubedep() {

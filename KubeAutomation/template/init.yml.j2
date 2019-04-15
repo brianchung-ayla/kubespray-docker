@@ -11,7 +11,7 @@
       dest: /tmp/
 
   - name: create secret
-    shell: kubectl create -f /tmp/init/secret
+    shell: cd /tmp/init/secret && sh gen_secret.sh &&  kubectl create -f /tmp/init/secret
 
   - name: clean tmp folder
     shell: rm -rf /tmp/init
