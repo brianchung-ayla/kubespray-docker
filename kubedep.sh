@@ -2,12 +2,12 @@
 
 
 cp host_output/output.yml KubeAutomation/vars/output.yml
-cd /root/kubespray-docker/KubeAutomation/playbook && ansible-playbook prepare.yml && cd -
-cp KubeAutomation/config/hosts.ini /etc/ansible/hosts
+cd /home/${USER}/kubespray-docker/KubeAutomation/playbook && ansible-playbook prepare.yml && cd -
+sudo cp KubeAutomation/config/hosts.ini /etc/ansible/hosts
 
 kubedep() {
-docker run -d --name kubespray-docker \
--v /root/.ssh:/root/.ssh \
+sudo docker run -d --name kubespray-docker \
+-v /home/${USER}/.ssh:/root/.ssh \
 -v ${PWD}/KubeAutomation:/tmp/KubeAutomation \
 kubespray-docker $1 $2
 

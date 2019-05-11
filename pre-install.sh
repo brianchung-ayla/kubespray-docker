@@ -18,4 +18,5 @@ else
   sudo apt-get install -y docker-ce ansible
 fi
 
+sudo sed -i '/host_key_checking/s/#//g' /etc/ansible/ansible.cfg
 docker build -t kubespray-docker .

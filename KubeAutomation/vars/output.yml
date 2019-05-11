@@ -1,5 +1,28 @@
+env: gcp
 masters:
-  - brian-demo-g4xl,10.10.43.198
-  - brian-demo-q493,10.10.43.199
-  - brian-demo-dlr5,10.10.43.200
-lab: true
+  - ayla-master-perf-gfg2,10.10.43.214
+  - ayla-master-perf-7mf3,10.10.43.213
+  - ayla-master-perf-s680,10.10.43.211
+ingress:
+  - ayla-ingress-perf-q2b5,10.10.20.43
+  - ayla-ingress-perf-bmtw,10.10.20.44
+nodes:
+  - ayla-minion-perf-1,10.10.43.216
+  - ayla-minion-perf-10,10.10.43.212
+  - ayla-minion-perf-13,10.10.43.205
+  - ayla-minion-perf-4,10.10.43.203
+  - ayla-minion-perf-7,10.10.43.204
+  - ayla-minion-perf-11,10.10.43.208
+  - ayla-minion-perf-2,10.10.43.217
+  - ayla-minion-perf-5,10.10.43.209
+  - ayla-minion-perf-8,10.10.43.210
+  - ayla-minion-perf-12,10.10.43.215
+  - ayla-minion-perf-3,10.10.43.206
+  - ayla-minion-perf-6,10.10.43.207
+  - ayla-minion-perf-9,10.10.43.202
+etcds:
+  - ayla-etcd-perf-jggr,10.10.43.219
+  - ayla-etcd-perf-s9zk,10.10.43.220
+  - ayla-etcd-perf-r09c,10.10.43.218
+lb_address: 10.10.43.201
+lb_port: 6443
