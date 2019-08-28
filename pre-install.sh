@@ -6,7 +6,7 @@ if [ "$USER" != "root" ];then
     sed -i 's/root/ubuntu/g' KubeAutomation/template/hosts.ini.j2
 fi
 
-read -p 'which cloud provider you use? (gcp/aws) ' CLOUD
+CLOUD=`grep cloud host_output/output.yml|awk '{print $2}'`
 
 if [ "$CLOUD" = "gcp" ];then
   sudo apt-get update

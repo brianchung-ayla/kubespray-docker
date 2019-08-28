@@ -1,0 +1,10 @@
+- hosts: kube-master
+  gather_facts: no
+  become: yes
+  become_method: sudo
+  tasks:
+  - name: copy ssl.tgz to masters
+    copy:
+      src: ../custom_cert/ssl.tgz
+      dest: /tmp
+

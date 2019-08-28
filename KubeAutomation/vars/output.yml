@@ -1,5 +1,0 @@
-masters:
-  - k8s-node1,10.0.0.1
-  - k8s-node2,10.0.0.2
-  - k8s-node3,10.0.0.3
-lab: true

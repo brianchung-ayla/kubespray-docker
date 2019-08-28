@@ -14,10 +14,10 @@ bin_dir: /usr/local/bin
 
 ## External LB example config
 {% if lb_address is defined -%}
-{% if aws is defined -%}
+{%- if cloud == "aws" }
 apiserver_loadbalancer_domain_name: "{{ lb_address }}"
 {% else -%}
-## apiserver_loadbalancer_domain_name: "elb.some.domain"
+# apiserver_loadbalancer_domain_name: "elb.some.domain"
 {% endif -%}
 loadbalancer_apiserver:
   address: {{ lb_address }}
@@ -58,8 +58,13 @@ nginx_kube_apiserver_healthcheck_port: 8081
 # cloud_provider:
 
 ## Set these proxy values in order to update package manager and docker daemon to use proxies
-# http_proxy: ""
-# https_proxy: ""
+{% if http_proxy is defined -%}
+http_proxy: "http://{{ http_proxy }}"
+https_proxy: "http://{{ http_proxy }}"
+{% else -%}
+#http_proxy: ""
+#https_proxy: ""
+{% endif -%}
 
 ## Refer to roles/kubespray-defaults/defaults/main.yml before modifying no_proxy
 # no_proxy: ""
@@ -83,7 +88,7 @@ nginx_kube_apiserver_healthcheck_port: 8081
 # ignore_assert_errors: false
 
 ## The read-only port for the Kubelet to serve on with no authentication/authorization. Uncomment to enable.
-# kube_read_only_port: 10255
+kube_read_only_port: 10255
 
 ## Set true to download and cache container
 # download_container: true

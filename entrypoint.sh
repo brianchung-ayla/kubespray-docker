@@ -13,17 +13,23 @@ cp /tmp/KubeAutomation/config/reset.yml /kubespray/reset.yml
 cp /tmp/KubeAutomation/config/k8s_app_main.yml /kubespray/roles/kubernetes-apps/ansible/defaults/main.yml
 cp /tmp/KubeAutomation/config/k8s_master_main.yml /kubespray/roles/kubernetes/master/defaults/main/main.yml
 cp /tmp/KubeAutomation/config/k8s_node_main.yml /kubespray/roles/kubernetes/node/defaults/main.yml
+cp /tmp/KubeAutomation/config/client_main.yml /kubespray/roles/kubernetes/client/tasks/main.yml
+cp /tmp/KubeAutomation/config/kubeadm-setup.yml /kubespray/roles/kubernetes/master/tasks/kubeadm-setup.yml
 
 ACTION=$1
 
-if [ "$2" == "CN" ];then
-    ansible-playbook -i inventory/mycluster/hosts.ini --become --become-user=root /tmp/KubeAutomation/playbook/copy_download.yml
-fi
+#if [ "$2" == "CN" ];then
+#    ansible-playbook -i inventory/mycluster/hosts.ini --become --become-user=root /tmp/KubeAutomation/playbook/copy_download.yml
+#fi
 
 case $ACTION in
   'deploy' )
     ansible-playbook -i inventory/mycluster/hosts.ini --become --become-user=root cluster.yml
     ansible-playbook -i inventory/mycluster/hosts.ini --become --become-user=root /tmp/KubeAutomation/playbook/init.yml
+    ansible-playbook -i inventory/mycluster/hosts.ini --become --become-user=root /tmp/KubeAutomation/playbook/kubelet_args.yml
+    if [ "$2" == "CN" ];then
+        ansible-playbook -i inventory/mycluster/hosts.ini --become --become-user=root /tmp/aylaKubeAutomation/playbook/clean_proxy.yml
+    fi
     ;;
 
   'reset' )

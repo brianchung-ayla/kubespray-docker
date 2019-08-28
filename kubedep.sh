@@ -1,9 +1,6 @@
 #!/bin/bash
 
 
-cp host_output/output.yml KubeAutomation/vars/output.yml
-cd /home/${USER}/kubespray-docker/KubeAutomation/playbook && ansible-playbook prepare.yml && cd -
-sudo cp KubeAutomation/config/hosts.ini /etc/ansible/hosts
 
 kubedep() {
 sudo docker run -d --name kubespray-docker \
@@ -21,6 +18,12 @@ ACTION=$1
 
 case $ACTION in
   'deploy' )
+    cp host_output/output.yml KubeAutomation/vars/output.yml
+    cd /home/${USER}/kube-automation/KubeAutomation/playbook && ansible-playbook prepare.yml && cd -
+    cd /home/${USER}/kube-automation/KubeAutomation/playbook && ansible-playbook gen_cert.yml && cd -
+    cd /home/${USER}/kube-automation/KubeAutomation/playbook && ansible-playbook copy_cert.yml && cd -
+    sudo cp KubeAutomation/config/hosts.ini /etc/ansible/hosts
+
     kubedep deploy
     ;;
 
@@ -36,7 +39,14 @@ case $ACTION in
     kubedep upgrade $2
     ;;
 
-  '*' )
+  'debug' )
+    sudo docker run -it --rm --entrypoint=bash --name kubespray-docker \
+    -v /home/${USER}/.ssh:/root/.ssh \
+    -v ${PWD}/KubeAutomation:/tmp/KubeAutomation \
+    kubespray-docker
+    ;;
+
+  * )
     echo "unknown action!"
     exit 0
 esac

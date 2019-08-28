@@ -21,7 +21,7 @@ docker_iptables_enabled: "false"
 
 # Docker log options
 # Rotate container stderr/stdout logs at 50m and keep last 5
-docker_log_opts: "--log-opt max-size=50m --log-opt max-file=5"
+docker_log_opts: "--log-opt max-size=10m --log-opt max-file=3"
 
 # define docker bin_dir
 docker_bin_dir: "/usr/bin"
@@ -33,8 +33,7 @@ docker_rpm_keepcache: 0
 ## An obvious use case is allowing insecure-registry access to self hosted registries.
 ## Can be ipaddress and domain_name.
 ## example define 172.19.16.11 or mirror.registry.io
-docker_insecure_registries:
-  - registry.example.com
+#docker_insecure_registries:
 
 ## Add other registry,example China registry mirror.
 # docker_registry_mirrors:

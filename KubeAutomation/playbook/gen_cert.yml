@@ -1,0 +1,18 @@
+- hosts: localhost
+  gather_facts: no
+  vars_files: 
+  - "../vars/output.yml"
+  - "../config/k8s-cluster.yml"
+  tasks:
+  - name: generate easyrsa.sh
+    template: 
+      src: ../template/easyrsa.sh.j2
+      dest: ../custom_cert/easyrsa.sh
+
+  - name: grant permission
+    file:
+      dest: ../custom_cert/easyrsa.sh
+      mode: a+x
+
+  - name: execute easyrsa.sh
+    shell: cd ../custom_cert && sh easyrsa.sh

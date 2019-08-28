@@ -1,0 +1,69 @@
+#!/bin/bash
+
+curl -LO https://storage.googleapis.com/kubernetes-release/easy-rsa/easy-rsa.tar.gz
+tar xzf easy-rsa.tar.gz
+rm -rf easy-rsa.tar.gz
+mv easy-rsa-master apiserver 
+cp -r apiserver front-proxy
+mkdir ssl
+cd apiserver/easyrsa3
+
+
+# gen apiserver ssl
+EXPIRY_DATE={{ expiry_date }}
+
+./easyrsa init-pki
+./easyrsa --batch "--req-cn=kubernetes" build-ca nopass
+{% set service_cidr = kube_service_addresses.split('.') %}
+MASTER_CLUSTER_IP={{ service_cidr[0] }}.{{ service_cidr[1] }}.{{ service_cidr[2] }}.1
+./easyrsa --subject-alt-name="IP:${MASTER_CLUSTER_IP},"\
+"IP:127.0.0.1,"\
+{% for master in masters -%}
+"IP:{{ master }},"\
+{% endfor %}
+"DNS: localhost,"\
+{% for master in masters -%}
+{% set list =  master.split('.') %}
+"DNS:kube-{{ env }}-master-{{ list[2] }}{{ list[3] }},"\
+{% endfor %}
+"DNS:kubernetes,"\
+"DNS:kubernetes.default,"\
+"DNS:kubernetes.default.svc,"\
+"DNS:kubernetes.default.svc.cluster,"\
+"DNS:{{ lb_address }},"\
+"DNS:kubernetes.default.svc.cluster.local" \
+--days=${EXPIRY_DATE} \
+build-server-full kube-apiserver nopass
+
+./easyrsa --dn-mode=org  --req-org=system:masters --req-c= --req-st= --req-city= --req-email= --req-ou= --days=${EXPIRY_DATE} build-client-full kube-apiserver-kubelet-client nopass
+
+
+#gen front-proxy ssl
+cd ../../front-proxy/easyrsa3
+./easyrsa init-pki
+./easyrsa --batch "--req-cn=front-proxy-ca" build-ca front-proxy-ca nopass
+./easyrsa --days=${EXPIRY_DATE} build-client-full front-proxy-client nopass
+
+#move required ssl to ssl folder
+cd ../../
+cp apiserver/easyrsa3/pki/ca.crt ssl/
+cp apiserver/easyrsa3/pki/private/ca.key ssl/
+cp apiserver/easyrsa3/pki/issued/kube-apiserver.crt ssl/apiserver.crt
+cp apiserver/easyrsa3/pki/private/kube-apiserver.key ssl/apiserver.key
+cp apiserver/easyrsa3/pki/issued/kube-apiserver-kubelet-client.crt ssl/apiserver-kubelet-client.crt
+cp apiserver/easyrsa3/pki/private/kube-apiserver-kubelet-client.key ssl/apiserver-kubelet-client.key
+
+cp front-proxy/easyrsa3/pki/ca.crt ssl/front-proxy-ca.crt
+cp front-proxy/easyrsa3/pki/private/ca.key ssl/front-proxy-ca.key
+cp front-proxy/easyrsa3/pki/issued/front-proxy-client.crt ssl/
+cp front-proxy/easyrsa3/pki/private/front-proxy-client.key ssl/
+
+#re-format ssl
+cd ssl
+sed -i '/Certificate/,/BEGIN CERTIFICATE/d'  apiserver-kubelet-client.crt && sed -i '1i-----BEGIN CERTIFICATE-----' apiserver-kubelet-client.crt
+sed -i '/Certificate/,/BEGIN CERTIFICATE/d' apiserver.crt && sed -i '1i-----BEGIN CERTIFICATE-----' apiserver.crt
+sed -i '/Certificate/,/BEGIN CERTIFICATE/d' front-proxy-client.crt && sed -i '1i-----BEGIN CERTIFICATE-----' front-proxy-client.crt
+
+#archive ssl
+cd ../
+tar -czf ssl.tgz ssl

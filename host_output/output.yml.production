@@ -1,4 +1,4 @@
-env: gcp
+cloud: gcp
 masters:
   - k8s-master1,10.0.0.1
   - k8s-master2,10.0.0.2
@@ -16,3 +16,4 @@ ingress:
   - k8s-ingress2,10.0.0.11
 lb_address: 10.1.0.1
 lb_port: 6443
+expiry_date: 365
